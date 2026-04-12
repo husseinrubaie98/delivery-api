@@ -1,6 +1,5 @@
-package com.husseinrubaie.delivery.ioc;
+package com.husseinrubaie.learning.ioc;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component

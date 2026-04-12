@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(
 		scanBasePackages = {
 				"com.husseinrubaie.delivery",
-				// Other packages to component-scan
+				"com.husseinrubaie.learning",
 		}
 )
 // Using the above annotation is equivalent to using the 3 below:

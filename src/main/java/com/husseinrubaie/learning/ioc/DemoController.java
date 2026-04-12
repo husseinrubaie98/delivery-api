@@ -1,4 +1,4 @@
-package com.husseinrubaie.delivery.ioc;
+package com.husseinrubaie.learning.ioc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
