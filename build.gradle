@@ -2,6 +2,9 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.5'
 	id 'io.spring.dependency-management' version '1.1.7'
+	// Frontend toolchain: drives the Tailwind v4 + FlyonUI build via npm.
+	// Uses the system Node by default (see the node { } block below).
+	id 'com.github.node-gradle.node' version '7.1.0'
 }
 
 group = 'com.husseinrubaie'
@@ -19,15 +22,82 @@ repositories {
 }
 
 dependencies {
+	// Web (server-rendered MVC + Thymeleaf views)
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// Security (session-based form login; UI is server-rendered)
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// Persistence: JPA + PostgreSQL + Flyway (public schema + schema-per-tenant)
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	// Boot 4 modularized autoconfigure: spring-boot-flyway carries FlywayAutoConfiguration.
+	implementation 'org.springframework.boot:spring-boot-flyway'
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	// Email (used from Phase 1 onwards: verification, password reset)
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// Ops
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	// NOTE: A full Testcontainers-backed integration harness (real PostgreSQL) is set
+	// up at the start of Phase 1, pinned to the Boot 4 / Testcontainers 2.x pairing.
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// ---------------------------------------------------------------------------
+// Frontend build: Tailwind CSS v4 + FlyonUI compiled into the app's static
+// resources. Generated output lives under build/ (never committed) and is
+// bundled into the jar via an extra resources source directory.
+// ---------------------------------------------------------------------------
+def frontendDir = "$projectDir/src/main/frontend"
+def frontendGenDir = layout.buildDirectory.dir("generated/frontend")
+
+node {
+	// Use the Node/npm already on PATH. (Set download = true + a pinned version for
+	// fully hermetic builds where nodejs.org is reachable, e.g. CI.)
+	download = false
+	nodeProjectDir = file(frontendDir)
+}
+
+// Compile the stylesheet (input: src/main/frontend/app.css) into generated static resources.
+tasks.register('buildCss', com.github.gradle.node.npm.task.NpmTask) {
+	dependsOn 'npmInstall'
+	npmCommand = ['run', 'build:css']
+	doFirst {
+		frontendGenDir.get().dir('static/css').asFile.mkdirs()
+	}
+	inputs.files(fileTree(frontendDir) {
+		include 'app.css', 'package.json', 'package-lock.json'
+	})
+	inputs.dir('src/main/resources/templates').optional()
+	outputs.dir(frontendGenDir)
+}
+
+// FlyonUI ships interactive JS; expose it as a served static asset.
+tasks.register('copyFlyonuiJs', Copy) {
+	dependsOn 'npmInstall'
+	from("$frontendDir/node_modules/flyonui/flyonui.js")
+	into frontendGenDir.map { it.dir('static/js') }
+}
+
+// Package the generated assets into the application resources.
+sourceSets.main.resources.srcDir frontendGenDir
+
+tasks.named('processResources') {
+	dependsOn 'buildCss', 'copyFlyonuiJs'
 }

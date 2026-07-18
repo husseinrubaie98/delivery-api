@@ -1,0 +1,15 @@
+/*
+ * Delivery Platform stylesheet — Tailwind CSS v4 + FlyonUI.
+ *
+ * Compiled by the Gradle `buildCss` task into
+ * build/generated/frontend/static/css/app.css and served at /css/app.css.
+ * Do not edit the generated output; edit this source file instead.
+ */
+@import "tailwindcss";
+@plugin "flyonui";
+@import "./node_modules/flyonui/variants.css";
+@plugin "@iconify/tailwind4";
+
+/* Generate only the utilities actually used by FlyonUI components and our templates. */
+@source "./node_modules/flyonui/dist/index.js";
+@source "../resources/templates";

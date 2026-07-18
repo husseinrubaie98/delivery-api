@@ -1,6 +1,10 @@
 HELP.md
 .gradle
 build/
+
+### Frontend build (Tailwind v4 + FlyonUI) ###
+node_modules/
+src/main/frontend/node_modules/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

@@ -1,0 +1,127 @@
+spring:
+  application:
+    name: delivery-api
+
+  profiles:
+    active: dev
+
+  # Multi-tenancy note:
+  # The datasource points at the shared "public" schema. Tenant (delivery-company)
+  # schemas are selected per-request by switching the connection search_path.
+  datasource:
+    url: jdbc:postgresql://localhost:5432/delivery_platform
+    username: delivery_app
+    password: delivery_app_pw
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: delivery-pool
+      maximum-pool-size: 10
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Flyway is the single source of truth for schema; Hibernate never emits DDL.
+      # 'validate' misbehaves under schema-per-tenant (it only sees the bootstrap
+      # connection's schema), so we disable Hibernate schema management entirely.
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Boot manages Flyway for the shared PUBLIC schema only (and orders it before JPA).
+  # Each tenant (delivery-company) schema is migrated programmatically at provisioning
+  # time via db/migration/tenant. See tenancy.TenantSchemaProvisioner.
+  flyway:
+    enabled: true
+    schemas: public
+    default-schema: public
+    locations: classpath:db/migration/public
+    baseline-on-migrate: true
+
+  # Mail (dev: no-op / logged; real SMTP configured per environment later)
+  mail:
+    host: localhost
+    port: 1025
+
+  # Fail fast on wiring problems rather than hiding them (production default).
+  main:
+    lazy-initialization: false
+
+server:
+  port: 8090
+  servlet:
+    session:
+      timeout: 15m
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  health:
+    # No SMTP server in dev; don't let the mail probe mark the app DOWN.
+    mail:
+      enabled: false
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: Delivery Platform API
+    description: Core backend + server-rendered UI for the delivery companies platform
+    version: 1.0.0
+  author:
+    firstname: Hussein
+    lastname: Rubaie
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    com.husseinrubaie: DEBUG
+
+---
+# ---------------------------------------------------------------------------
+# DEV profile: local development against a local PostgreSQL.
+# ---------------------------------------------------------------------------
+spring:
+  config:
+    activate:
+      on-profile: dev
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+
+---
+# ---------------------------------------------------------------------------
+# PROD profile: placeholder. Real values injected via environment variables.
+# ---------------------------------------------------------------------------
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        format_sql: false
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
+logging:
+  level:
+    org.hibernate.SQL: WARN
+    com.husseinrubaie: INFO

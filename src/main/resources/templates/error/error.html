@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: page('Error', ~{::content})}">
+<body>
+<th:block th:fragment="content">
+    <section class="px-4 sm:px-8 py-20 max-w-xl mx-auto text-center">
+        <span class="icon-[tabler--alert-triangle] size-14 text-warning mx-auto"></span>
+        <h1 class="mt-4 text-3xl font-bold" th:text="${status} ?: 'Error'">Error</h1>
+        <p class="mt-1 text-lg text-base-content/70" th:text="${reason}">Something went wrong</p>
+        <p class="mt-4 text-base-content/70" th:text="${message}">An unexpected error occurred.</p>
+        <p class="mt-1 text-sm text-base-content/50" th:if="${path}">
+            <span class="font-mono" th:text="${path}"></span>
+        </p>
+        <a class="btn btn-primary mt-8" th:href="@{/}">Back to home</a>
+    </section>
+</th:block>
+</body>
+</html>

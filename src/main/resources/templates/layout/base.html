@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:fragment="page(title, content)" data-theme="light">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title != null} ? ${title} + ' · Delivery Platform' : 'Delivery Platform'">Delivery Platform</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}"/>
+</head>
+<body class="min-h-screen flex flex-col bg-base-100 text-base-content">
+
+<!-- Top navigation -->
+<header class="navbar bg-base-100 border-b border-base-content/10 px-4 sm:px-8">
+    <div class="navbar-start">
+        <a class="link text-base-content link-neutral text-xl font-semibold no-underline inline-flex items-center gap-2"
+           th:href="@{/}">
+            <span class="icon-[tabler--truck-delivery] size-6 text-primary"></span>
+            Delivery Platform
+        </a>
+    </div>
+    <div class="navbar-end gap-2">
+        <a class="btn btn-text btn-secondary" th:href="@{/login}">Sign in</a>
+        <a class="btn btn-primary" th:href="@{/login}">Get started</a>
+    </div>
+</header>
+
+<!-- Page body -->
+<main class="flex-1">
+    <th:block th:replace="${content}">
+        <p>Page content goes here.</p>
+    </th:block>
+</main>
+
+<!-- Footer -->
+<footer class="footer bg-base-200 text-base-content/70 px-4 sm:px-8 py-6 mt-auto">
+    <aside class="flex items-center gap-2">
+        <span class="icon-[tabler--truck-delivery] size-5 text-primary"></span>
+        <p>Delivery Platform — multi-tenant delivery operations. &copy; 2026 Hussein Rubaie.</p>
+    </aside>
+</footer>
+
+<!-- FlyonUI interactive components -->
+<script th:src="@{/js/flyonui.js}"></script>
+</body>
+</html>
