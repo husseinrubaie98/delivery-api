@@ -35,6 +35,7 @@ public class SecurityConfig {
                                 "/",
                                 "/error",
                                 "/register", "/register/**",
+                                "/verify-email",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**", "/favicon.ico",
                                 "/actuator/health", "/actuator/info")
                         .permitAll()
