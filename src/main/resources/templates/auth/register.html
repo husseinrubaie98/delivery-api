@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: page('Create account', ~{::content})}">
+<body>
+<th:block th:fragment="content">
+
+    <section class="px-4 sm:px-8 py-10 sm:py-16 flex justify-center">
+        <div class="card w-full max-w-lg bg-base-100 shadow-sm border border-base-content/10">
+            <div class="card-body gap-5">
+
+                <div class="text-center">
+                    <span class="icon-[tabler--building-store] size-10 text-primary"></span>
+                    <h1 class="text-2xl font-bold mt-2">Create your shop account</h1>
+                    <p class="text-base-content/70 mt-1">
+                        Register your online shop to start creating delivery orders.
+                    </p>
+                </div>
+
+                <form th:action="@{/register}" th:object="${form}" method="post"
+                      class="space-y-4" novalidate>
+
+                    <!-- Shop name -->
+                    <div>
+                        <label class="label-text" for="shopName">Shop name</label>
+                        <input type="text" th:field="*{shopName}" class="input w-full"
+                               th:classappend="${#fields.hasErrors('shopName')} ? 'is-invalid'"
+                               placeholder="e.g. Rubaie Electronics"
+                               autocomplete="organization" autofocus/>
+                        <p class="text-error text-xs mt-1"
+                           th:if="${#fields.hasErrors('shopName')}" th:errors="*{shopName}"></p>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="label-text" for="email">Email</label>
+                        <input type="email" th:field="*{email}" class="input w-full"
+                               th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                               placeholder="you@example.com" autocomplete="email"/>
+                        <p class="text-error text-xs mt-1"
+                           th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="label-text" for="password">Password</label>
+                        <div class="input w-full"
+                             th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'">
+                            <input type="password" th:field="*{password}"
+                                   placeholder="8+ characters" autocomplete="new-password"/>
+                            <button type="button" class="block cursor-pointer" aria-label="Toggle password visibility"
+                                    data-toggle-password='{ "target": "#password" }'>
+                                <span class="icon-[tabler--eye] password-active:block hidden size-5 shrink-0 text-base-content/60"></span>
+                                <span class="icon-[tabler--eye-off] password-active:hidden block size-5 shrink-0 text-base-content/60"></span>
+                            </button>
+                        </div>
+                        <p class="text-base-content/50 text-xs mt-1"
+                           th:unless="${#fields.hasErrors('password')}">
+                            At least 8 characters, with an uppercase letter, a lowercase letter, and a number.
+                        </p>
+                        <p class="text-error text-xs mt-1"
+                           th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                    </div>
+
+                    <!-- Confirm password -->
+                    <div>
+                        <label class="label-text" for="confirmPassword">Confirm password</label>
+                        <div class="input w-full"
+                             th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'">
+                            <input type="password" th:field="*{confirmPassword}"
+                                   placeholder="Repeat your password" autocomplete="new-password"/>
+                            <button type="button" class="block cursor-pointer" aria-label="Toggle password visibility"
+                                    data-toggle-password='{ "target": "#confirmPassword" }'>
+                                <span class="icon-[tabler--eye] password-active:block hidden size-5 shrink-0 text-base-content/60"></span>
+                                <span class="icon-[tabler--eye-off] password-active:hidden block size-5 shrink-0 text-base-content/60"></span>
+                            </button>
+                        </div>
+                        <p class="text-error text-xs mt-1"
+                           th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
+                    </div>
+
+                    <!-- Phone -->
+                    <div>
+                        <label class="label-text" for="phone">Phone</label>
+                        <input type="tel" th:field="*{phone}" class="input w-full"
+                               th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'"
+                               placeholder="+964 770 000 0000" autocomplete="tel"/>
+                        <p class="text-error text-xs mt-1"
+                           th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+                    </div>
+
+                    <!-- Address -->
+                    <div>
+                        <label class="label-text" for="address">Shop address</label>
+                        <input type="text" th:field="*{address}" class="input w-full"
+                               th:classappend="${#fields.hasErrors('address')} ? 'is-invalid'"
+                               placeholder="City, district, street" autocomplete="street-address"/>
+                        <p class="text-error text-xs mt-1"
+                           th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Create account</button>
+                </form>
+
+                <p class="text-center text-sm text-base-content/70">
+                    Already have an account?
+                    <a class="link link-primary link-animated" th:href="@{/login}">Sign in</a>
+                </p>
+
+            </div>
+        </div>
+    </section>
+
+</th:block>
+</body>
+</html>
