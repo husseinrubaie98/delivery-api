@@ -1,0 +1,1 @@
+call gradlew bootRun 2>&1
