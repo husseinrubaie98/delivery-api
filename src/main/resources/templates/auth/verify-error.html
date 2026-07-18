@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: page('Verification failed', ~{::content})}">
+<body>
+<th:block th:fragment="content">
+
+    <section class="px-4 sm:px-8 py-16 sm:py-24 flex justify-center">
+        <div class="card w-full max-w-md bg-base-100 shadow-sm border border-base-content/10 text-center">
+            <div class="card-body items-center gap-3">
+
+                <span class="icon-[tabler--link-off] size-14 text-warning"></span>
+                <h1 class="text-2xl font-bold">This link isn&rsquo;t valid</h1>
+
+                <p class="text-base-content/70">
+                    The verification link is invalid or has expired.
+                    Verification links stop working <strong>24 hours</strong> after they are sent.
+                </p>
+
+                <div class="alert alert-soft alert-warning items-start text-left" role="alert">
+                    <span class="icon-[tabler--info-circle] size-5 shrink-0 mt-0.5"></span>
+                    <p class="text-sm">
+                        Registering again with the same email sends you a fresh verification link.
+                    </p>
+                </div>
+
+                <div class="mt-2 flex flex-wrap justify-center gap-2">
+                    <a class="btn btn-primary" th:href="@{/register}">Register again</a>
+                    <a class="btn btn-text" th:href="@{/}">Back to home</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</th:block>
+</body>
+</html>
