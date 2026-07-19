@@ -19,8 +19,24 @@
         </a>
     </div>
     <div class="navbar-end gap-2">
-        <a class="btn btn-text btn-secondary" th:href="@{/login}">Sign in</a>
-        <a class="btn btn-primary" th:href="@{/register}">Get started</a>
+        <!-- Signed out -->
+        <th:block th:if="${currentUserEmail == null}">
+            <a class="btn btn-text btn-secondary" th:href="@{/login}">Sign in</a>
+            <a class="btn btn-primary" th:href="@{/register}">Get started</a>
+        </th:block>
+        <!-- Signed in -->
+        <th:block th:unless="${currentUserEmail == null}">
+            <span class="hidden sm:inline-flex items-center gap-1.5 text-sm text-base-content/70">
+                <span class="icon-[tabler--user-circle] size-5"></span>
+                <span th:text="${currentUserEmail}">user@example.com</span>
+            </span>
+            <form th:action="@{/logout}" method="post" class="m-0">
+                <button type="submit" class="btn btn-outline btn-secondary">
+                    <span class="icon-[tabler--logout] size-4"></span>
+                    Sign out
+                </button>
+            </form>
+        </th:block>
     </div>
 </header>
 
