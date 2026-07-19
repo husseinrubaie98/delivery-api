@@ -1,6 +1,7 @@
 package com.husseinrubaie.delivery.web;
 
 import com.husseinrubaie.delivery.security.SecurityConfig;
+import com.husseinrubaie.delivery.security.WebTestSecurityConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * no database required.
  */
 @WebMvcTest(HomeController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, WebTestSecurityConfig.class})
 class HomeControllerTest {
 
     @Autowired
