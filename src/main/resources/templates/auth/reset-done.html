@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: page('Password updated', ~{::content})}">
+<body>
+<th:block th:fragment="content">
+
+    <section class="px-4 sm:px-8 py-16 sm:py-24 flex justify-center">
+        <div class="card w-full max-w-md bg-base-100 shadow-sm border border-base-content/10 text-center">
+            <div class="card-body items-center gap-3">
+
+                <span class="icon-[tabler--circle-check] size-14 text-success"></span>
+                <h1 class="text-2xl font-bold">Password updated</h1>
+
+                <p class="text-base-content/70">
+                    Your password has been reset. Your old password no longer works —
+                    sign in with the new one.
+                </p>
+
+                <div class="mt-2 flex flex-wrap justify-center gap-2">
+                    <a class="btn btn-primary" th:href="@{/login}">Sign in</a>
+                    <a class="btn btn-text" th:href="@{/}">Back to home</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</th:block>
+</body>
+</html>

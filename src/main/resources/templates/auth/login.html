@@ -55,13 +55,18 @@
                         </div>
                     </div>
 
-                    <!-- Remember me -->
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="remember-me" name="remember-me"
-                               class="checkbox checkbox-sm checkbox-primary"/>
-                        <label class="label-text text-sm" for="remember-me">
-                            Keep me signed in for 30 days
-                        </label>
+                    <!-- Remember me + forgot password -->
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="remember-me" name="remember-me"
+                                   class="checkbox checkbox-sm checkbox-primary"/>
+                            <label class="label-text text-sm" for="remember-me">
+                                Keep me signed in for 30 days
+                            </label>
+                        </div>
+                        <a class="link link-primary text-sm" th:href="@{/forgot-password}">
+                            Forgot password?
+                        </a>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block">Sign in</button>
