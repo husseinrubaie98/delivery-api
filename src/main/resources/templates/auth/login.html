@@ -24,6 +24,14 @@
                     </p>
                 </div>
 
+                <!-- Spring Security redirects here with ?logout after signing out. -->
+                <div th:if="${param.logout}" class="alert alert-soft alert-success items-start" role="alert">
+                    <span class="icon-[tabler--circle-check] size-5 shrink-0 mt-0.5"></span>
+                    <p class="text-sm">
+                        You have been signed out.
+                    </p>
+                </div>
+
                 <form th:action="@{/login}" method="post" class="space-y-4" novalidate>
 
                     <!-- Email (form-login username parameter) -->

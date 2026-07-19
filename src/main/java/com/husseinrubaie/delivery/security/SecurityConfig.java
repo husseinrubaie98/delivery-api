@@ -39,6 +39,9 @@ public class SecurityConfig {
                                 "/error",
                                 "/register", "/register/**",
                                 "/verify-email",
+                                // formLogin().permitAll() matches /login and /login?error by
+                                // exact URL only; this covers variants like /login?logout.
+                                "/login",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**", "/favicon.ico",
                                 "/actuator/health", "/actuator/info")
                         .permitAll()
